@@ -1,0 +1,15 @@
+# Dataloader related configs
+
+defaults:
+  - sampler: null
+
+steps_per_epoch: -1 # -1 means interpolated from dataset's length
+train_batch_size: ???
+val_batch_size: ${loader.train_batch_size}
+train_num_workers: 8
+val_num_workers: ${loader.train_num_workers}
+pytorch_num_threads: null
+pin_memory: True
+drop_last: True
+persistent_workers: False
+batch_sampler: null

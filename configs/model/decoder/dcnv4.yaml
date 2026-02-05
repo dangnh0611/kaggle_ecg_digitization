@@ -1,0 +1,9 @@
+defaults:
+  - default
+  - _self_
+
+conv_layer: DCNv4
+conv_kwargs:
+  groups: 8
+  offset_scale: 0.5
+  dw_kernel_size: 3

@@ -1,0 +1,13 @@
+defaults:
+  - default
+  - _self_
+
+accelerator: hpu
+strategy: hpu_single
+devices: auto
+num_nodes: 1
+use_distributed_sampler: false
+precision: bf16-mixed
+compile:
+  # @TODO - investigating the problems
+  lightning_like: False  # .log() cause graph break, generally more issues, so disable by default

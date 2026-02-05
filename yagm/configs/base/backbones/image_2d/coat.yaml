@@ -1,0 +1,12 @@
+_target_: yagm.backbones.ForwardFeaturesTimmBackbone
+
+model_name: coat_lite_medium_384.in1k # coat_tiny.in1k | coat_mini.in1k | coat_small.in1k | coat_lite_tiny.in1k | coat_lite_mini.in1k | coat_lite_small.in1k | coat_lite_medium.in1k | coat_lite_medium_384.in1k
+pretrained: True
+img_size: ${data.img_size}
+in_chans: 3
+num_classes: 0
+return_interm_layers: True
+out_features: [x1_nocls, x2_nocls, x3_nocls, x4_nocls]
+output_strides: [4,8,16,32]
+drop_rate: 0.0
+drop_path_rate: 0.0

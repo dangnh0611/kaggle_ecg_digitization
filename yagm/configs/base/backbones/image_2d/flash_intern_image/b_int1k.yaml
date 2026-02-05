@@ -1,0 +1,15 @@
+defaults:
+  - default
+
+# Flash Intern Image, Classification, B INT1K
+# https://github.com/OpenGVLab/DCNv4/blob/main/classification/configs/flash_intern_image_b_1k_224.yaml
+core_op: DCNv4
+channels: 112
+depths: [4, 4, 21, 4]
+groups: [7, 14, 28, 56]
+mlp_ratio: 4.0
+drop_path_rate: 0.0  # 0.5 for B
+layer_scale: 1e-5
+offset_scale: 0.5
+post_norm: True
+dw_kernel_size: 3

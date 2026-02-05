@@ -1,0 +1,5 @@
+performance_benchmark:
+  _target_: yagm.utils.lightning.CudaPerformanceBenchmark
+  train_interval: null
+  val_interval: null
+

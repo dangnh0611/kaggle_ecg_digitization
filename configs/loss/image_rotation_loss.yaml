@@ -1,0 +1,18 @@
+_target_: ecg.loss.image_rotation_loss.ImageRotationLoss
+
+cls:
+  _target_: torch.nn.CrossEntropyLoss
+  reduction: mean
+  label_smoothing: 0.1
+
+reg:
+  _target_: torch.nn.MSELoss
+  reduction: mean
+
+mtl:
+  method: gls
+  weights:
+  - 0.5
+  - 0.5
+
+  

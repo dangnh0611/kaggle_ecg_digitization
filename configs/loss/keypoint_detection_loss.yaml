@@ -1,0 +1,16 @@
+_target_: ecg.loss.keypoint_detection_loss.KeypointDetectionLoss
+
+main:
+  heatmap_loss: bce
+  reg_loss: l1
+
+grid:
+  heatmap_loss: bce
+  pos_weight: null
+
+mtl:
+  weight_method: scalar
+  loss_weights: [1.0, 1.0, 1.0, 1.0]
+  scale_invariant: False
+  loss_names: ["heatmap_main", "dsnt_main", "reg_main", "heatmap_grid"]
+  task_coefs: [1.0, 0.5, 0.5, 1.0]

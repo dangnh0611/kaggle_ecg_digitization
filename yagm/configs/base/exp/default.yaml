@@ -1,0 +1,18 @@
+# @package _global_
+
+# Experiment specific configs
+# Override configurations specified in global config, i.e `run.yaml`
+defaults:
+  - override /task: ???
+  - override /data: ???
+  - override /model: ???
+  - override /loss: ???
+  - _self_
+
+seed: 42
+
+logger:
+  wandb:
+    project: example
+
+exp_name: example_exp

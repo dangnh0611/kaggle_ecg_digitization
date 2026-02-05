@@ -1,0 +1,110 @@
+# @package _global_
+
+defaults:
+  - override /task: keypoint_detection_task
+  - override /data: keypoint_detection_dataset
+  - override /model: keypoint_detection_model
+  - override /loss: keypoint_detection_loss
+  - _self_
+
+env:
+  data_dir: data/
+
+cv:
+    strategy: v1/skf_1x5_rd42
+    num_folds: 5
+    fold_idx: 0
+    train_on_all: False
+
+loader:
+  train_batch_size: 16
+  val_batch_size: ${loader.train_batch_size}
+  train_num_workers: 16
+  val_num_workers: ${loader.train_num_workers}
+  pytorch_num_threads: null
+  pin_memory: False
+
+callbacks:
+  early_stopping:
+    patience: 5 # number of checks with no improvement after which training will be stopped
+  model_checkpoint:
+    metrics: ["val/best__AVG_ACC"]
+    train_time_interval: null
+    every_n_train_steps: null
+    every_n_epochs: null
+    save_on_train_epoch_end: False
+    save_top_k: 1
+    save_last: False
+  validation_scheduler:
+    milestones: [15000]
+    val_check_intervals: [1000]
+    check_val_every_n_epochs: null
+    milestone_unit: step
+  model_summary:
+    max_depth: 4
+
+trainer:
+  max_epochs: null
+  max_steps: 20000
+  val_check_interval: 5000
+  check_val_every_n_epoch: null
+  accumulate_grad_batches: 1
+  gradient_clip_val: null
+  # precision: 16-mixed
+  deterministic: False
+  benchmark: False
+  log_every_n_steps: 50
+
+optim:
+  name: torch@adamw
+  lr: 1e-4
+  weight_decay: 0.0
+  betas: [0.9, 0.999]
+  eps: 1e-7
+  # momentum: 0.9
+
+scheduler:
+  name: timm@cosine
+  warmup_steps: 0
+  warmup_epochs: null
+  cooldown_epochs: 0
+  min_lr_factor: 5e-3
+  warmup_lr_factor: 1e-2
+  cycle_limit: 1
+  cycle_decay: 0.5
+
+ema:
+  enable: True
+  train_decays: [0.995]
+  val_decays: ${ema.train_decays}
+  test_decays: ${ema.val_decays}
+  save_decays: ${ema.val_decays}
+  # ModelEmaV3 specific
+  min_decay: 0.0  # if use_warmup, EMA decay will increase from this value
+  update_after_step: 0
+  use_warmup: False
+  warmup_gamma: 1.0
+  warmup_power: 0.666666667
+  device: null
+  foreach: True
+  exclude_buffers: False
+  # ema reset
+  reset_from: global_best # null or none, primary, last_best, global_best
+  reset_sched_epochs: [-1] # list of epochs to perform reset
+  reset_on_plateau: -1
+  min_reset_interval: 5
+
+misc:
+  log_raw_cfg: False
+  log_cfg: True
+  log_cfg_rich: True
+  log_model: True  # print model in Torch style
+
+loggers:
+  wandb:
+    project: ecg_keypoint_detection
+
+oof_eval: False
+
+seed: 42
+exp_name: ecg_keypoint_detection

@@ -1,0 +1,99 @@
+# @package _global_
+
+# specify here default configuration
+# order of defaults determines the order in which configs override each other
+defaults:
+  - task: ???
+  - data: ???
+  - model: ???
+  - loss: ???
+  - loader: default
+  - callbacks: default
+  - loggers: # set logger here or use command line (e.g. `python train.py logger=tensorboard`)
+      - csv
+      - wandb
+      # - tensorboard
+  - trainer: default
+  - optim: default
+  - scheduler: default
+  - env: default
+  - hydra: custom
+
+  # config for hyperparameter optimization
+  - optional hparams_search: null
+
+  - _self_
+
+  # fast debugging config (enable through command line, e.g. `python train.py debug=default)
+  - debug: null
+
+  - exp: null
+
+  # optional local config for machine/user specific settings
+  - optional local: default
+
+cv:
+  strategy: null
+  num_folds: 1
+  fold_idx: 0
+  train_on: train  # train | all
+  val_on: val  # val | train | all
+
+ema:
+  enable: False
+  train_decays: [0.999]
+  val_decays: ${ema.train_decays}
+  test_decays: ${ema.val_decays}
+  save_decays: ${ema.val_decays}
+  # ModelEmaV3 specific
+  min_decay: 0.0  # if use_warmup, EMA decay will increase from this value
+  update_after_step: 0
+  use_warmup: False
+  warmup_gamma: 1.0
+  warmup_power: 0.666666667
+  device: null
+  foreach: True
+  exclude_buffers: False
+  # ema reset
+  reset_from: global_best # null or none, primary, last_best, global_best
+  reset_sched_epochs: [-1] # list of epochs to perform reset
+  reset_on_plateau: -1
+  min_reset_interval: 0
+
+misc:
+  log_level: INFO
+  log_raw_cfg: True
+  log_cfg: True
+  log_cfg_rich: True
+  log_model: True  # print model in Torch style
+  cooldown_sec: 0.0
+
+ckpt:
+  path: null
+  name: best.ckpt
+  strict: True
+
+debug:
+  hpu:
+    detect_dynamic_ops: 0  # > 0 to debug the Habana HPU recompile: https://docs.habana.ai/en/latest/PyTorch/Model_Optimization_PyTorch/Dynamic_Shapes.html#detecting-dynamic-ops
+
+# tags to help you identify your experiments
+# you can overwrite this in experiment configs
+# overwrite from command line with `python train.py tags="[first_tag, second_tag]"`
+tags: ["dev"]
+# all_tags: ${_extend: ${tags}, ["fold${cv.fold_idx}"] }
+all_tags: ${tags}
+
+train: True
+val: False
+test: False
+predict: False
+oof_eval: False
+
+# seed for random number generators in pytorch, numpy and python.random
+seed: null
+exp_name: null
+
+loggers:
+  wandb:
+    project: ???

@@ -1,0 +1,29 @@
+# Default config, should be tried first
+
+_target_: yagm.models.unet_2d.decoder.UnetDecoder
+
+# corresponding to strides of [32, 16, 8, 4, 2, 1]
+decoder_channels: [-1, 256, 192, 128, 64, 32, 16]  # coarse to fine
+n_blocks: 5
+upscale_type: interpolate  # interpolate | pixelshuffle
+norm_layer: layernorm
+act_layer: gelu
+conv_layer: conv2d
+conv_kwargs: null
+attn_type: null
+# interpolate specific kwargs
+interpolation_mode: nearest
+interpolation_antialias: False
+# pixelshuffle specific kwargs
+shuffle_blur: mean  # mean | gaussian
+shuffle_blur_ksize: 2  # usually: 2 for mean, 3 for gaussian
+shuffle_post_conv: False
+# fine-grained customizations
+center_block: False
+skip_on_finest: False  # whether to add skip connection from original resolution
+use_residual: False
+norm_after_conv: True  # if False, use conv -> act instead of usual conv -> norm -> act
+norm_on_skip: True  # apply normalization (LayerNorm, Batchnorm) on skip connection
+norm_on_cat: False  # apply normalization on concatenated feature up+skip
+act_on_cat: False  # apply activation on concatenated feature up+skip
+multiscale: True  # output multiscale features, fine to coarse

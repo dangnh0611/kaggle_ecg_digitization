@@ -1,0 +1,4 @@
+defaults:
+  - default
+  - performance_benchmark
+  - _self_

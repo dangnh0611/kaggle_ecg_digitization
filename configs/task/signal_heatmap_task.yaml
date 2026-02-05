@@ -1,0 +1,45 @@
+_target_: ecg.task.signal_heatmap_task.SignalHeatmapTask
+
+# metrics related config
+metrics:
+  train/loss_epoch: min
+  val/loss: min
+
+  val/heatmap__SNR: max
+  val/regress__SNR: max
+  val/SNR: max
+
+  # per type_id SNR
+  val/type_1_SNR: val/SNR
+  val/type_3_SNR: val/SNR
+  val/type_4_SNR: val/SNR
+  val/type_5_SNR: val/SNR
+  val/type_6_SNR: val/SNR
+  val/type_9_SNR: val/SNR
+  val/type_10_SNR: val/SNR
+  val/type_11_SNR: val/SNR
+  val/type_12_SNR: val/SNR
+
+metric_keep_top_k: 1
+metric: val/SNR
+metric_mode: ${task.metrics.${task.metric}} # min | max
+log_metrics:
+- val/heatmap__SNR
+- val/regress__SNR
+- val/SNR
+
+- val/type_1_SNR
+- val/type_3_SNR
+- val/type_4_SNR
+- val/type_5_SNR
+- val/type_6_SNR
+- val/type_9_SNR
+- val/type_10_SNR
+- val/type_11_SNR
+- val/type_12_SNR
+
+- val/loss
+- train/loss_epoch
+
+
+save_pred: False

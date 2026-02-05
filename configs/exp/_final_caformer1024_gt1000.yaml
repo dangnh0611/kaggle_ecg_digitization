@@ -1,0 +1,202 @@
+# @package _global_
+
+defaults:
+  - override /task: signal_heatmap_task
+  - override /data: signal_heatmap_dataset
+  - override /model: signal_heatmap_model
+  - override /model/encoder: caformer
+  - override /model/decoder: default
+  - override /loss: signal_heatmap_loss
+  - _self_
+
+model:
+  freeze_encoder: False
+  change_stem_stride: null
+  subpixel_mode: dsnt  # null | dsnt | offset
+
+  encoder:
+    model_name: caformer_b36.sail_in22k_ft_in1k_384
+    img_size: [1024, 1024]
+    in_chans: 4
+
+  decoder:
+    attn_type: null  # increase small params but significant training time -> prioritize increase number of decoder params instead
+    decoder_channels: [-1,256,224,192,160]  # coarse to fine
+    n_blocks: 4
+    skip_on_finest: False  # use skip connection on stride 1 feature map
+
+  seg_head:
+    out_channels: 1
+    ksize: 3
+    act: null
+    hidden_channels: [-1]  # -1 means 2x input channels
+    hidden_norm: layernorm
+    hidden_act: gelu
+
+
+data:
+  oversample_mode: final
+  oversample_factor: 5
+  gt_name: keypoints_by_round2
+
+  heatmap_hwl: [1024, 1024, 1000]
+  heatmap_stride: [1,1]
+  signal_length_secs: 2.5
+  keep_aspect_ratio: True
+  crop_h: null  # null | 503.93700787401576
+  use_template: gray
+
+  sigma: 2
+  adaptive_sigma_scale: 0.4
+
+  warp:
+    method: unwrap_flow
+    interp: lanczos  # lanczos | linear | cubic | nearest | spline4 | spline5
+    backend: cv2
+    device: cpu
+    precision: uint8
+
+    unwrap_flow:
+      filter_inside: True
+      method: pw_homo  # pw_homo | rect_spline | griddata
+      smooth_sigma: 0.0
+      _shift_0dot5_in_cv2_remap: True
+      kwargs:
+        K: 16  # default is K=4
+    global_homo:
+      filter_nearby: True
+
+  aug:
+    grid_rand_offset_p: 0.5
+    grid_rand_offset_mean: [0.0, 0.0]  # on type 1 -> [0.02691178 0.12159135]
+    grid_rand_offset_sigma: [0.4, 0.4]  # on type 1 -> [0.39258174 0.40736539]
+
+    # weak augmentation only
+    p: 0.1
+    # geometric
+    interp: lanczos
+    affine_p: 0.05
+    perspective_p: 0.05
+    pw_affine_p: 0.1
+    dropout_p: 0.0
+    # intensity
+    grayscale_p: 0.1  # 0.2
+    color_p: 0.2  # 0.5
+    reduce_quality_p: 0.05  # 0.1
+    blur_p: 0.05  # 0.1
+    noise_p: 0.05  # 0.1
+
+loss:
+  heatmap_loss: jsd
+  regress_loss: mse
+
+  mtl:
+    weight_method: gls
+    loss_weights: [1.0, 0.0, 0.0]
+    scale_invariant: False
+    loss_names: ["heatmap", "offset", "regress"]
+    task_coefs: [1.0, 0.5, 0.5]
+
+env:
+  data_dir: data/
+
+cv:
+    strategy: v1/skf_1x5_rd42
+    num_folds: 5
+    fold_idx: 0
+    train_on: train
+    val_on: val
+
+loader:
+  train_batch_size: 8
+  val_batch_size: ${loader.train_batch_size}
+  train_num_workers: 32
+  val_num_workers: ${loader.train_num_workers}
+  pytorch_num_threads: null
+  pin_memory: False
+
+callbacks:
+  early_stopping:
+    patience: 10 # number of checks with no improvement after which training will be stopped
+  model_checkpoint:
+    metrics: ["val/SNR"]
+    train_time_interval: null
+    every_n_train_steps: null
+    every_n_epochs: null
+    save_on_train_epoch_end: False
+    save_top_k: -1
+    save_last: True  # True | False | link
+
+  validation_scheduler:
+    milestones: [40000]
+    val_check_intervals: [5000]
+    check_val_every_n_epochs: null
+    milestone_unit: step
+  model_summary:
+    max_depth: 4
+
+trainer:
+  max_epochs: null
+  max_steps: 60000
+  val_check_interval: 10000
+  check_val_every_n_epoch: null
+  accumulate_grad_batches: 1
+  gradient_clip_val: 1
+  # precision: 16-mixed
+  deterministic: False
+  benchmark: False
+  log_every_n_steps: 50
+
+optim:
+  name: torch@adamw
+  lr: 5e-5
+  weight_decay: 0.0
+  betas: [0.9, 0.999]
+  eps: 1e-7
+  # momentum: 0.9
+
+scheduler:
+  name: timm@cosine
+  warmup_steps: 5000
+  warmup_epochs: null
+  cooldown_epochs: 0
+  min_lr_factor: 5e-4
+  warmup_lr_factor: 1e-2
+  cycle_limit: 1
+  cycle_decay: 0.5
+
+ema:
+  enable: True
+  train_decays: [0.999, 0.995]
+  val_decays: [0.999]
+  test_decays: ${ema.val_decays}
+  save_decays: [0.999, 0.995]
+  # ModelEmaV3 specific
+  min_decay: 0.0  # if use_warmup, EMA decay will increase from this value
+  update_after_step: 0
+  use_warmup: False
+  warmup_gamma: 1.0
+  warmup_power: 0.666666667
+  device: null
+  foreach: True
+  exclude_buffers: False
+  # ema reset
+  reset_from: global_best # null or none, primary, last_best, global_best
+  reset_sched_epochs: [-1] # list of epochs to perform reset
+  reset_on_plateau: -1
+  min_reset_interval: 5
+
+misc:
+  log_raw_cfg: False
+  log_cfg: True
+  log_cfg_rich: True
+  log_model: True  # print model in Torch style
+
+loggers:
+  wandb:
+    project: final_ecg_signal_heatmap
+
+oof_eval: False
+
+seed: 250503
+exp_name: FINAL_CAFORMER1024_GT1000

@@ -1,0 +1,35 @@
+_target_: ecg.model.signal_fine_heatmap_model.SignalFineHeatmapModel
+
+defaults:
+  - encoder: maxvit
+  - neck: null
+  - decoder: smp
+  - _self_
+
+encoder_downsample: 2
+
+fine_encoder:
+  _target_: yagm.backbones.timm_backbone.TimmBackbone
+  model_name: vgg19.tv_in1k
+  in_chans: ${model.encoder.in_chans}
+  pretrained: True
+  features_only: True
+  out_indices: [0, 1, 2]
+
+decoder:
+  decoder_channels: [-1, 256, 192, 160, 128, 128, 128]  # coarse to fine
+  n_blocks: 6  # from stride 64 to 1
+  skip_on_finest: True  # use skip connection on stride 1 feature map
+
+freeze_encoder: False
+change_stem_stride: null
+
+subpixel_mode: dsnt  # null | dsnt | offset
+
+seg_head:
+  out_channels: 1
+  ksize: 3
+  act: null
+  hidden_channels: [-1]  # -1 means 2x input channels
+  hidden_norm: layernorm
+  hidden_act: gelu

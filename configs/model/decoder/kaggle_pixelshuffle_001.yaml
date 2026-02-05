@@ -1,0 +1,12 @@
+# Config that match 2nd solution on Google Research - Identify Contrails to Reduce Global Warming competition
+# https://www.kaggle.com/competitions/google-research-identify-contrails-reduce-global-warming/writeups/dit-2nd-place-solution
+
+defaults:
+  - default
+  - _self_
+
+n_blocks: 5
+upscale_type: pixelshuffle  # interpolate | pixelshuffle
+# fine-grained customizations
+norm_after_conv: False  # if False, use conv -> act instead of usual conv -> norm -> act
+act_on_cat: True  # apply activation on concatenated feature up+skip

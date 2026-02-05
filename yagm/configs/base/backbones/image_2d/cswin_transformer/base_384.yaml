@@ -1,0 +1,13 @@
+defaults:
+  - default
+
+
+# CSWin Transformer, B-384 variant
+# ref: https://github.com/microsoft/CSWin-Transformer/blob/main/models/cswin.py
+
+patch_size: 4
+embed_dim: 96
+depth: [2,4,32,2]
+split_size: [1,2,12,12]
+num_heads: [4,8,16,32]
+mlp_ratio: 4

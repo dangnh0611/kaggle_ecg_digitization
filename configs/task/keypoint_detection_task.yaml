@@ -1,0 +1,52 @@
+_target_: ecg.task.keypoint_detection_task.KeypointDetectionTask
+
+# metrics related config
+metrics:
+  train/loss_epoch: min
+  val/loss: min
+
+  val/dsnt__AVG_ACC: max
+  val/reg__AVG_ACC: max
+  val/heatmap__AVG_ACC: max
+  val/best__AVG_ACC: max
+
+  val/dsnt__ACC: max
+  val/reg__ACC: max
+  val/heatmap__ACC: max
+  val/best__ACC: max
+  
+  val/GRID_AP: max
+
+metric_keep_top_k: 1
+metric: val/best__AVG_ACC
+metric_mode: ${task.metrics.${task.metric}} # min | max
+log_metrics:
+- val/best__AVG_ACC
+- val/best__ACC
+- val/GRID_AP
+
+- val/dsnt__AVG_ACC
+- val/reg__AVG_ACC
+- val/heatmap__AVG_ACC
+
+- val/dsnt__ACC
+- val/reg__ACC
+- val/heatmap__ACC
+
+- val/loss
+- train/loss_epoch
+
+decode:
+  grid:
+    enable: True
+
+eval:
+  thres: 4  # pixels in ref image 0001
+  
+viz:
+  enable: False
+  draw_keypoints: True
+  draw_heatmap: True
+
+save_pred: False
+save_pred_dir: null

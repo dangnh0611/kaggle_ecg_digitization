@@ -1,0 +1,24 @@
+_target_: ecg.model.signal_heatmap_model.SignalHeatmapModel
+
+defaults:
+  - encoder: maxvit
+  - neck: null
+  - decoder: smp
+  - _self_
+
+decoder:
+  decoder_channels: [-1, 256, 192, 160, 128, 96, 64]  # coarse to fine
+  n_blocks: 4
+
+freeze_encoder: False
+change_stem_stride: null
+
+subpixel_mode: dsnt  # null | dsnt | offset
+
+seg_head:
+  out_channels: 1
+  ksize: 3
+  act: null
+  hidden_channels: [-1]  # -1 means 2x input channels
+  hidden_norm: layernorm
+  hidden_act: gelu

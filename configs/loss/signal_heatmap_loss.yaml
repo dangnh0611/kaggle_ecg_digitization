@@ -1,0 +1,11 @@
+_target_: ecg.loss.signal_heatmap_loss.SignalHeatmapLoss
+
+heatmap_loss: jsd
+regress_loss: mse
+
+mtl:
+  weight_method: scalar
+  loss_weights: [1.0, 1.0, 1.0]
+  scale_invariant: False
+  loss_names: ["heatmap", "offset", "regress"]
+  task_coefs: [1.0, 0.5, 0.5]

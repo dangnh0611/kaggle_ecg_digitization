@@ -1,0 +1,2 @@
+defaults:
+- /backbones/image_2d/cswin_transformer/base_384@_here_

@@ -1,0 +1,13 @@
+_target_: ecg.model.image_rotation_model.ImageRotationModel
+
+defaults:
+  - encoder: efficientvit_mit
+
+
+head:
+  pool_type: catavgmax
+  dropout: 0.2
+  hidden_dropout: 0.2
+  hidden_channels: [1024]
+  norm: layernorm
+  act: gelu

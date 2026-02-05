@@ -1,0 +1,46 @@
+_target_: ecg.model.signal_naf_heatmap_model.SignalNAFHeatmapModel
+
+# NAFNet Architecture Parameters
+in_chans: 3
+
+# width=32 is standard for "Local" or "Lightweight" NAFNet.
+# Increase to 64 for "Base" (SOTA Denoising) performance if GPU allows.
+
+# WIDTH32 VARIANT (SIDD SETTING)
+# width: 32
+# enc_blk_nums: [2, 2, 4, 8]
+# middle_blk_num: 12
+# dec_blk_nums: [2, 2, 2, 2]
+
+# WIDTH 64 VARIANT (SIDD SETTING)
+width: 64                # The main difference
+enc_blk_nums: [2, 2, 4, 8]
+middle_blk_num: 12
+dec_blk_nums: [2, 2, 2, 2]
+
+
+# # WIDTH 64 VARIANT (GO PRO SETTING)
+# width: 64
+# enc_blk_nums: [1, 1, 1, 28]  # Note the massive 28-block stage
+# middle_blk_num: 1
+# # Decoders are lighter to save compute
+# dec_blk_nums: [1, 1, 1, 1]
+
+
+# Regularization
+drop_path_rate: 0.0
+drop_out_rate: 0.0
+
+# General Model Settings
+subpixel_mode: dsnt      # null | dsnt | offset
+
+# Segmentation Head
+seg_head:
+  out_channels: 1
+  ksize: 3
+  act: null
+  hidden_channels: [-1]  # -1 means 2x input (64 if width=32)
+  hidden_norm: layernorm
+  hidden_act: gelu
+
+pretrained: null

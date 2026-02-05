@@ -1,0 +1,38 @@
+name: CI CPU
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    # runs-on: self-hosted
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        submodules: recursive
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: "3.10"
+
+    - name: Install dependencies
+      run: |
+        pip install pytest
+        pip install -r requirements.txt
+        sudo apt-get update && sudo apt-get install ffmpeg libsm6 libxext6 -y
+
+    - name: Build and install
+      run: pip install .
+
+    - name: Run tests
+      # run: python -m pytest
+      run: python -m pytest tests/ -s

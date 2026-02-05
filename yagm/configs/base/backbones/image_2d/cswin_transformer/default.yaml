@@ -1,0 +1,22 @@
+_target_: yagm.backbones.cswin_transformer.CSWinTransformer
+
+# CSWin Transformer
+# https://github.com/microsoft/CSWin-Transformer
+
+img_size: ${data.img_size}
+patch_size: 4
+in_chans: 3
+embed_dim: 64
+depth: [1, 2, 21, 1]
+split_size: 7
+num_heads: [1, 2, 4, 8]
+mlp_ratio: 4.0
+qkv_bias: False
+qk_scale: null
+drop_rate: 0.0
+attn_drop_rate: 0.0
+drop_path_rate: 0.0
+hybrid_backbone: null
+# norm_layer: nn.LayerNorm
+use_chk: False
+pretrained: null

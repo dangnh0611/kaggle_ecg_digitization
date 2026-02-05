@@ -1,0 +1,13 @@
+name: imcui
+channels:
+  - pytorch
+  - nvidia
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.10.10
+  - pytorch-cuda=12.1
+  - pytorch=2.4.0
+  - pip
+  - pip:
+      - -r requirements.txt

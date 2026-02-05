@@ -1,0 +1,9 @@
+defaults:
+  - default
+  - _self_
+
+upscale_type: pixelshuffle  # interpolate | pixelshuffle
+# pixelshuffle specific kwargs
+shuffle_blur: mean  # mean | gaussian
+shuffle_blur_ksize: 2  # usually: 2 for mean, 3 for gaussian
+shuffle_post_conv: False

@@ -1,0 +1,10 @@
+_target_: yagm.backbones.ForwardIntermediatesTimmBackbone
+
+model_name: tf_efficientnet_b0.ns_jft_in1k
+pretrained: True
+features_only: False
+# input_size: [3, 512, 512]
+in_chans: 3
+output_indices: [0, 1, 2, 3, 4]
+drop_rate: 0.0
+drop_path_rate: 0.0

@@ -1,0 +1,10 @@
+_target_: yagm.data.sampler.BalanceSampler
+batch_size: ${loader.train_batch_size}
+max_epochs: ${trainer.max_epochs}
+num_linear_epochs: 0
+num_constant_epochs: 0
+start_ratio: 0.125
+end_ratio: ${loader.sampler.start_ratio}
+constant_ratio: ${loader.sampler.end_ratio}
+one_pos_mode: True
+random_seed: ${seed}

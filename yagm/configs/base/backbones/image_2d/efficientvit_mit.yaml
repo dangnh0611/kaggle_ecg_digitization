@@ -1,0 +1,9 @@
+_target_: yagm.backbones.ForwardIntermediatesTimmBackbone
+
+model_name: efficientvit_b2.r224_in1k  # efficientvit_l1.r224_in1k | efficientvit_b2.r224_in1k | efficientvit_b0.r224_in1k
+pretrained: True
+features_only: False
+in_chans: 3
+output_indices: [0, 1, 2, 3]
+drop_rate: 0.0
+# drop_path_rate: 0.0  # not supported

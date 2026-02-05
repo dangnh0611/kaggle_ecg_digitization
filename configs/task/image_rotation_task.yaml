@@ -1,0 +1,22 @@
+_target_: ecg.task.image_rotation_task.ImageRotationTask
+
+# metrics related config
+metrics:
+  train/loss_epoch: min
+  val/loss: min
+
+  val/accuracy: max
+  val/angle_mae: min
+  val/sine_cosine_mae: min
+  
+metric_keep_top_k: 3
+metric: val/angle_mae
+metric_mode: ${task.metrics.${task.metric}} # min | max
+log_metrics:
+- val/accuracy
+- val/angle_mae
+- val/sine_cosine_mae
+
+- val/loss
+- train/loss_epoch
+- val/loss

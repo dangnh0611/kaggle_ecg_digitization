@@ -1,0 +1,13 @@
+# Optimizer config passed to `yagm.optim.create_optimizer()`
+
+name: timm@adamw
+lr: 1e-4
+weight_decay: 0.0
+# momentum: 0.9
+# opt_eps:
+# opt_betas:
+# layer_decay:
+# opt_foreach:
+# optim_kwargs: {}
+base_lr: null
+lr_scale_mode: sqrt  # sqrt | linear

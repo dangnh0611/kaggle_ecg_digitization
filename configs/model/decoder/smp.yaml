@@ -1,0 +1,11 @@
+# config which match SMP's default implementation
+# https://github.com/qubvel-org/segmentation_models.pytorch/blob/main/segmentation_models_pytorch/decoders/unet/decoder.py
+
+defaults:
+  - default
+  - _self_
+
+norm_layer: batchnorm
+act_layer: relu
+# fine-grained customizations
+norm_on_skip: False  # apply normalization (LayerNorm, Batchnorm) on skip connection

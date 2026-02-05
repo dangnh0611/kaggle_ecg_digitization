@@ -1,0 +1,6 @@
+validation_scheduler:
+  _target_: yagm.utils.lightning.ValidationScheduler
+  milestones: []
+  val_check_intervals: []
+  check_val_every_n_epochs: []
+

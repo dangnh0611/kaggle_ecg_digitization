@@ -1,0 +1,72 @@
+# _target_: ecg.model.signal_hat_heatmap_model.SignalHATHeatmapModel
+
+# # HAT Architecture Parameters (HAT-Base Configuration)
+# img_size: 512
+# embed_dim: 180
+# depths: [6, 6, 6, 6, 6, 6]
+# num_heads: [6, 6, 6, 6, 6, 6]
+# window_size: 16
+# compress_ratio: 3
+# squeeze_factor: 30
+# conv_scale: 0.01
+# overlap_ratio: 0.5
+# mlp_ratio: 2.0
+# qkv_bias: True
+# qk_scale: null
+# drop_rate: 0.0
+# attn_drop_rate: 0.0
+# drop_path_rate: 0.1
+# ape: False
+# img_range: 1.0
+
+# # General Model Settings
+# freeze_encoder: False
+# change_stem_stride: null # Not applicable to HAT
+# subpixel_mode: dsnt      # null | dsnt | offset
+
+# # Segmentation Head (Applied directly to HAT output)
+# seg_head:
+#   out_channels: 1
+#   ksize: 3
+#   act: null
+#   hidden_channels: [-1]  # -1 means 2x input channels (360 in this case)
+#   hidden_norm: layernorm
+#   hidden_act: gelu
+
+
+
+
+_target_: ecg.model.signal_hat_heatmap_model.SignalHATHeatmapModel
+
+# HAT Architecture Parameters (HAT-Tiny Configuration)
+img_size: 512
+embed_dim: 48           # Critical: Reduced from 180 (Massive memory saving)
+depths: [6, 6, 6, 6]    # Reduced: 4 blocks instead of 6
+num_heads: [6, 6, 6, 6] # Kept at 6 to maintain multi-head benefits (head_dim=8)
+window_size: 8          # Critical: Reduced from 16 (4x smaller attention matrix)
+compress_ratio: 3
+squeeze_factor: 24      # Adjusted for smaller embed_dim (approx embed_dim / 2)
+conv_scale: 0.01
+overlap_ratio: 0.5
+mlp_ratio: 2.0
+qkv_bias: True
+qk_scale: null
+drop_rate: 0.0
+attn_drop_rate: 0.0
+drop_path_rate: 0.1
+ape: False
+img_range: 1.0
+
+# General Model Settings
+freeze_encoder: False
+change_stem_stride: null
+subpixel_mode: dsnt
+
+# Segmentation Head
+seg_head:
+  out_channels: 1
+  ksize: 3
+  act: null
+  hidden_channels: [-1]  # Will be 96 (2 * 48)
+  hidden_norm: layernorm
+  hidden_act: gelu

@@ -1,0 +1,35 @@
+_target_: ecg.model.keypoint_detection_model.KeypointDetectionModel
+
+defaults:
+  - encoder: maxvit
+  - neck: null
+  - decoder: pixelshuffle
+  - _self_
+
+decoder:
+  # decoder_channels: [-1, 256, 192, 128, 96, 64, 32]  # coarse to fine
+  decoder_channels: [-1, 384, 256, 192, 128, 96, 64]  # coarse to fine
+  n_blocks: 4
+
+freeze_encoder: False
+change_stem_stride: null
+
+seg_head:
+  out_channels: 58
+  ksize: 3
+  act: null
+  hidden_channels: [-1]  # -1 means 2x input channels
+  hidden_norm: layernorm
+  hidden_act: gelu
+
+sa_reg_head:
+  enable: True
+  feature_mode: enc
+  feature_idx: -1
+  proj_channels_per_output: 64
+  proj_drop_rate: 0.0
+  hidden_channels: [512]
+  drop_rate: 0.0
+  norm: layernorm
+  norm_eps: 1e-6
+  act: gelu

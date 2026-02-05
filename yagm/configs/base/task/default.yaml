@@ -1,0 +1,9 @@
+_target_: ???
+
+# metrics related config
+metrics:
+  train/loss_epoch: min
+  val/loss: min
+metric_keep_top_k: 1
+metric: val/loss
+metric_mode: ${task.metrics.${task.metric}} # min | max
