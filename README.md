@@ -3,7 +3,12 @@
 **Solution writeup**: [5th place solution: Multi-stages Heatmap-based Modeling](https://www.kaggle.com/competitions/physionet-ecg-image-digitization/writeups/5th-place-solution)
 
 
+## Changelogs
+**2025/02/06**: extensive ablation study was added, checkout [docs/ABLATION_STUDY.md](docs/ABLATION_STUDY.md)
+
+
 ## Table Of Contents
+- [Changelogs](#changelogs)
 - [Table Of Contents](#table-of-contents)
 - [Solution Summary](#solution-summary)
 - [Hardware](#hardware)
@@ -19,6 +24,7 @@
     - [(1) Dual Encoder CoaT Lite Medium + VGG19 on image size 1024x1024 (main model)](#1-dual-encoder-coat-lite-medium--vgg19-on-image-size-1024x1024-main-model)
     - [(2) Dual Encoder ConvNeXT Large + VGG19 on image size 1024x1024 (main model)](#2-dual-encoder-convnext-large--vgg19-on-image-size-1024x1024-main-model)
     - [(3) Single Encoder ConvNeXT-small on image size 1024x512 (TALL model)](#3-single-encoder-convnext-small-on-image-size-1024x512-tall-model)
+- [Ablation Study](#ablation-study)
 - [More experiments](#more-experiments)
 - [Resources](#resources)
 - [Acknowledgements](#acknowledgements)
@@ -251,6 +257,10 @@ python3 -m yagm.run -m local=local 'cv.fold_idx=0' cv.train_on=all cv.val_on=all
 **Used in submission notebook:**
 - Checkpoint: [CONVNEXT_TALL_1024x512_GT500_ep3_step49996_val_SNR21.749077.ckpt](https://www.kaggle.com/datasets/dangnh0611/ecg-checkpoints?select=CONVNEXT_TALL_1024x512_GT500_ep3_step49996_val_SNR21.749077.ckpt)
 - Config: [CONVNEXT_TALL_1024x512_GT500_config.yaml](https://www.kaggle.com/datasets/dangnh0611/ecg-checkpoints?select=CONVNEXT_TALL_1024x512_GT500_config.yaml)
+
+## Ablation Study
+We provide extensive Ablation Study, details in [docs/ABLATION_STUDY.md](docs/ABLATION_STUDY.md)
+
 
 ## More experiments
 Just a WIP, checkout [docs/_OTHER_EXPERIMENTS.md](docs/_OTHER_EXPERIMENTS.md)
