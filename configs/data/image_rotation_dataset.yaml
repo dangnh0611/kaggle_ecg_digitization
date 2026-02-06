@@ -1,0 +1,19 @@
+defaults:
+- default
+
+_dataset_target_: ecg.data.datasets.image_rotation_dataset.ECGImageRotationDataset
+
+gt_name: keypoints_by_round2
+force_match_rand_angle_prob: 0.4
+img_size: [512, 512]
+interp: area  # MUST use area since we typically downsample
+
+aug:
+  p: 0.6
+  keep_ratio: True
+  interp: ${data.interp}
+  affine_p: 0.7
+  affine_scale: [0.6, 1.5]
+  affine_fit_output: True
+  crop_p: 0.7
+  dropout_p: 0.2

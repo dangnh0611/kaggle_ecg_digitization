@@ -1,0 +1,25 @@
+defaults:
+- default
+
+_dataset_target_: ecg.data.datasets.keypoint_detection_dataset.ECGKeypointDetectionDataset
+gt_name: keypoints_by_model
+img_size: [1024, 1024]
+heatmap_stride: [1,1]
+main_heatmap_mode: gaussian
+main_sigma: 2
+grid_heatmap_mode: gaussian
+grid_sigma: 2
+interp: cubic
+
+aug:
+  p: 0.75
+  keep_ratio: True
+  interp: ${data.interp}
+  hflip_p: 0.0
+  vflip_p: 0.0
+  rot90_p: 0.0
+  affine_p: 0.7
+  affine_scale: [0.75, 1.25]
+  affine_fit_output: True
+  crop_p: 0.7
+  dropout_p: 0.2

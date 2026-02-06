@@ -174,4 +174,4 @@ assets
 notebooks/log.txt
 
 tmp/
-data
+# ./data/

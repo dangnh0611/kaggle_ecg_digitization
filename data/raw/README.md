@@ -1,0 +1,1 @@
+Download the [official competition data](https://www.kaggle.com/competitions/physionet-ecg-image-digitization/data) here

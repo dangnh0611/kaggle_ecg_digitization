@@ -1,0 +1,2 @@
+Download the processed data from [my Kaggle dataset](https://www.kaggle.com/datasets/dangnh0611/ecg-digitization-processed-data) and put it here.
+More details and explainations about how each part/file was generated are listed under [../../docs/DATA_PROCESSING.md](../../docs/DATA_PROCESSING.md)

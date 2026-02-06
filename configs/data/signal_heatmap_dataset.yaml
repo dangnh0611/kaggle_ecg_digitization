@@ -1,0 +1,53 @@
+defaults:
+- default
+
+_dataset_target_: ecg.data.datasets.signal_heatmap_dataset.ECGSignalHeatmapDataset
+oversample_mode: baseline
+oversample_factor: 5
+gt_name: keypoints_by_model
+
+heatmap_hwl: [512, 512, 500]  # heatmap Height, Width, Length (signal length)
+heatmap_stride: [1,1]
+signal_length_secs: 2.5
+keep_aspect_ratio: True
+crop_h: null  # null | 503.93700787401576
+use_template: null  # rgb | gray | null
+
+sigma: 2
+adaptive_sigma_scale: null
+
+warp:
+  method: unwrap_flow
+  interp: lanczos  # lanczos | linear | cubic | nearest | spline4 | spline5
+  backend: cv2
+  device: cpu
+  precision: uint8
+
+  unwrap_flow:
+    filter_inside: True
+    method: pw_homo  # pw_homo | rect_spline | griddata
+    smooth_sigma: 0.0
+    _shift_0dot5_in_cv2_remap: True
+    kwargs: {}
+  global_homo:
+    filter_nearby: True
+
+aug:
+  grid_rand_offset_p: 0.0
+  grid_rand_offset_mean: [0.0, 0.0]  # on type 1 -> [0.02691178 0.12159135]
+  grid_rand_offset_sigma: [0.4, 0.4]  # on type 1 -> [0.39258174 0.40736539]
+
+  p: 0.0
+  # geometric
+  interp: lanczos
+  affine_p: 0.0
+  perspective_p: 0.0
+  pw_affine_p: 0.0
+  dropout_p: 0.0
+  # intensity
+  grayscale_p: 0.0  # 0.2
+  color_p: 0.0  # 0.5
+  reduce_quality_p: 0.0  # 0.1
+  blur_p: 0.0  # 0.1
+  noise_p: 0.0  # 0.1
+
